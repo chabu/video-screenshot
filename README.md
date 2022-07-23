@@ -5,6 +5,3 @@
 1. Load the unzipped folder as an extension.
 1. Click the top right button to run (and exit).
 1. The image will be saved in the download folder.
-
-# LICENSE
-Thinking
