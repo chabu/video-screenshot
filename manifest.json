@@ -1,6 +1,6 @@
 {
 	"manifest_version": 3,
-	"name": "1 Chrome Extensions PoC",
+	"name": "1 CRX PoC",
 	"version": "0.0.1",
 	"permissions": [
 		"activeTab",
