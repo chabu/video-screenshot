@@ -18,7 +18,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-	// step 2 of 6
+	// step 3 of 6
 	if (alarm.name === "doRemainingProcesses") {
 		let dataUrl = await chrome.tabs.captureVisibleTab({
 			format: captureVisibleTabFormat
@@ -47,7 +47,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 });
 
 chrome.runtime.onMessage.addListener(async (msg, sender) => {
-	// step 6 of 6
+	// step 5 of 6
 	if (msg.cmd === "completeProcessImage") {
 		let second = msg.currentTime;
 
@@ -97,7 +97,7 @@ function windowAlert(msg) {
 	window.alert(msg);
 }
 
-// step 3 of 6
+// step 2 of 6
 function forefrontVideo() {
 	let video = document.querySelector("video[src]");
 	if (video === null) {
@@ -216,7 +216,7 @@ function processImage(dataUrl, canvasToDataUrlType) {
 	img.src = dataUrl;
 }
 
-// step 5 of 6
+// step 6 of 6
 function restoreVideo() {
 	let forRestore = JSON.parse(
 		sessionStorage.getItem("my-restore")
@@ -246,7 +246,5 @@ function restoreVideo() {
 		}
 	}
 
-	if (forefront !== null) {
-		forefront.remove();
-	}
+	forefront.remove();
 }
