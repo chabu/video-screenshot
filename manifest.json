@@ -1,0 +1,17 @@
+{
+	"manifest_version": 3,
+	"name": "1 Chrome Extensions PoC",
+	"version": "0.0.1",
+	"permissions": [
+		"activeTab",
+		"scripting",
+		"alarms",
+		"downloads"
+	],
+	"background": {
+		"service_worker": "bg.js"
+	},
+	"action": {
+		"default_title": "button"
+	}
+}
