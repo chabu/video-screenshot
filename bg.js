@@ -1,8 +1,7 @@
 "use strict";
 
 const delayCapture = 50; // in ms
-
-const captureVisibleTabFormat = "jpeg"; // or "png"
+const captureVisibleTabFormat = "png"; // or "jpeg"
 const canvasToDataUrlType = "image/jpeg"; // or "image/png"
 
 // step 1 of 6
