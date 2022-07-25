@@ -153,9 +153,13 @@ function forefrontVideo() {
 		video.style.height = "100%";
 	}
 
+	let rect = video.getBoundingClientRect();
+
 	let forCapture = {
-		clientWidth: video.clientWidth,
-		clientHeight: video.clientHeight,
+		elemX: rect.x,
+		elemY: rect.y,
+		elemWidth: rect.width,
+		elemHeight: rect.height,
 		videoWidth: videoWidth,
 		videoHeight: videoHeight,
 		currentTime: video.currentTime,
@@ -183,8 +187,10 @@ function processImage(dataUrl, canvasToDataUrlType) {
 		);
 
 		let pixelRatio = window.devicePixelRatio;
-		let sourceWidth = Number(forCapture.clientWidth) * pixelRatio;
-		let sourceHeight = Number(forCapture.clientHeight) * pixelRatio;
+		let elemX = Number(forCapture.elemX) * pixelRatio;
+		let elemY = Number(forCapture.elemY) * pixelRatio;
+		let elemWidth = Number(forCapture.elemWidth) * pixelRatio;
+		let elemHeight = Number(forCapture.elemHeight) * pixelRatio;
 
 		let videoWidth = Number(forCapture.videoWidth);
 		let videoHeight = Number(forCapture.videoHeight);
@@ -198,7 +204,7 @@ function processImage(dataUrl, canvasToDataUrlType) {
 			desynchronized: true
 		});
 		context.drawImage(img,
-			0, 0, sourceWidth, sourceHeight,
+			elemX, elemY, elemWidth, elemHeight,
 			0, 0, videoWidth, videoHeight
 		);
 
