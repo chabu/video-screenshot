@@ -135,7 +135,7 @@ function forefrontVideo() {
 	div.style.width = "100%";
 	div.style.height = "100vh";
 	div.style.border = "none";
-	div.style.backgroundColor = "rgba(0, 0, 0, 0)";
+	div.style.backgroundColor = "rgb(0, 0, 0)";
 	div.style.padding = "0";
 	div.style.margin = "0";
 
