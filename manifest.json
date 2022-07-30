@@ -9,7 +9,8 @@
 		"downloads"
 	],
 	"background": {
-		"service_worker": "bg.js"
+		"service_worker": "bg.js",
+		"type": "module"
 	},
 	"action": {
 		"default_title": "button"
