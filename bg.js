@@ -3,6 +3,25 @@ const delayCapture = 50; // in ms
 const captureVisibleTabFormat = "png"; // or "jpeg"
 const canvasToDataUrlType = "image/jpeg"; // or "image/png"
 
+chrome.runtime.onInstalled.addListener(() => {
+	chrome.contextMenus.create({
+		id: "1",
+		title: "shoot"
+	});
+});
+
+// step 1 of 6 (alt)
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+	await chrome.scripting.executeScript({
+		target: {tabId: tab.id},
+		func: forefrontVideo
+	});
+
+	chrome.alarms.create("doRemainingProcesses", {
+		when: Date.now() + delayCapture
+	});
+});
+
 // step 1 of 6
 chrome.action.onClicked.addListener(async (tab) => {
 	await chrome.scripting.executeScript({
@@ -140,7 +159,11 @@ function forefrontVideo() {
 
 	window.scroll(0, 0);
 
-	document.body.appendChild(div);
+	if (document.fullscreenElement !== null) {
+		document.fullscreenElement.appendChild(div);
+	} else {
+		document.body.appendChild(div);
+	}
 	div.appendChild(video);
 
 	video.style.position = "static";
