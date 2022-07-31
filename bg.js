@@ -6,7 +6,7 @@ const canvasToDataUrlType = "image/jpeg"; // or "image/png"
 chrome.runtime.onInstalled.addListener(() => {
 	chrome.contextMenus.create({
 		id: "1",
-		title: "shoot"
+		title: "Take a screenshot of videos"
 	});
 });
 
