@@ -116,7 +116,7 @@ function windowAlert(msg) {
 
 // step 2 of 6
 function forefrontVideo() {
-	let video = document.querySelector("video[src]");
+	let video = document.querySelector("video[src^='blob:']");
 	if (video === null) {
 		throw Error();
 	}
@@ -156,6 +156,8 @@ function forefrontVideo() {
 	div.style.backgroundColor = "rgb(0, 0, 0)";
 	div.style.padding = "0";
 	div.style.margin = "0";
+
+	video.classList.add("my-target");
 
 	window.scroll(0, 0);
 
@@ -252,7 +254,7 @@ function restoreVideo() {
 	sessionStorage.removeItem("my-restore");
 	sessionStorage.removeItem("my-capture");
 
-	let video = document.querySelector("video[src]");
+	let video = document.querySelector(".my-target");
 	let nearby = document.querySelector(".my-nearby");
 	let forefront = document.querySelector(".my-forefront");
 
@@ -263,6 +265,8 @@ function restoreVideo() {
 	video.style.position = forRestore.position;
 	video.style.width = forRestore.width;
 	video.style.height = forRestore.height;
+
+	video.classList.remove("my-target");
 
 	if (nearby !== null) {
 		nearby.classList.remove("my-nearby");
