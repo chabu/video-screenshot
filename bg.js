@@ -10,29 +10,26 @@ chrome.runtime.onInstalled.addListener(() => {
 	});
 });
 
-// step 1 of 6 (alt)
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-	await chrome.scripting.executeScript({
-		target: {tabId: tab.id},
-		func: forefrontVideo
-	});
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+	doAllProcesses(tab);
+});
 
-	chrome.alarms.create("doRemainingProcesses", {
-		when: Date.now() + delayCapture
-	});
+chrome.action.onClicked.addListener((tab) => {
+	doAllProcesses(tab);
 });
 
 // step 1 of 6
-chrome.action.onClicked.addListener(async (tab) => {
+async function doAllProcesses(tab) {
 	await chrome.scripting.executeScript({
 		target: {tabId: tab.id},
-		func: forefrontVideo
+		func: forefrontVideo,
+		injectImmediately: true
 	});
 
 	chrome.alarms.create("doRemainingProcesses", {
 		when: Date.now() + delayCapture
 	});
-});
+}
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
 	// step 3 of 6
@@ -157,8 +154,6 @@ function forefrontVideo() {
 	div.style.padding = "0";
 	div.style.margin = "0";
 
-	video.classList.add("my-target");
-
 	window.scroll(0, 0);
 
 	if (document.fullscreenElement !== null) {
@@ -166,6 +161,7 @@ function forefrontVideo() {
 	} else {
 		document.body.appendChild(div);
 	}
+	video.classList.add("my-target");
 	div.appendChild(video);
 
 	video.style.position = "static";
