@@ -1,21 +1,20 @@
 const delayCapture = 50; // in ms
-
 const captureVisibleTabFormat = "png"; // or "jpeg"
 const canvasToDataUrlType = "image/jpeg"; // or "image/png"
 
-chrome.runtime.onInstalled.addListener(() => {
-	chrome.contextMenus.create({
-		id: "1",
-		title: "Take a screenshot of videos"
-	});
+chrome.action.onClicked.addListener((tab) => {
+	doAllProcesses(tab.id);
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
 	doAllProcesses(tab.id);
 });
 
-chrome.action.onClicked.addListener((tab) => {
-	doAllProcesses(tab.id);
+chrome.runtime.onInstalled.addListener(() => {
+	chrome.contextMenus.create({
+		id: "1",
+		title: "Take a screenshot of videos"
+	});
 });
 
 // step 1 of 6
@@ -43,7 +42,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 	// step 3 of 6
 	if (alarm.name === "doRemainingProcesses") {
 		let dataUrl = await chrome.tabs.captureVisibleTab({
-			format: captureVisibleTabFormat
+			format: captureVisibleTabFormat,
+			quality: 100
 		});
 
 		let tabs = await chrome.tabs.query({
