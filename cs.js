@@ -6,7 +6,7 @@ let currentVideo = null;
 let currentNearby = null;
 let currentForefront = null;
 
-chrome.runtime.onMessage.addListener((msg, sender) => {
+chrome.runtime.onMessage.addListener((msg) => {
 	if (msg.cmd === null) {
 		return;
 	} else if (msg.cmd === "forefrontVideo") {
