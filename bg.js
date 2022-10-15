@@ -2,7 +2,7 @@
 
 const delayCapture = 50; // in ms
 const captureVisibleTabFormat = "png"; // or "jpeg"
-const canvasToDataUrlType = "image/jpeg"; // or "image/png"
+const canvasToDataUrlType = "image/png"; // or "image/jpeg"
 
 chrome.action.onClicked.addListener((tab) => {
 	doAllProcesses(tab.id);
@@ -86,9 +86,7 @@ chrome.runtime.onMessage.addListener(async (msg, sender) => {
 			suffix = `h${h}m${m}s${s}`;
 		}
 
-		let url = new URL(msg.baseURI);
-		let name = url.pathname.split("/").pop();
-		let filename = `${url.hostname}-${name}-${suffix}`;
+		let filename = `ep0${suffix}`;
 
 		if (msg.data === "data:,") {
 			await chrome.tabs.sendMessage(tabId, {
