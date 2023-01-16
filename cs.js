@@ -51,25 +51,23 @@ function forefrontVideo() {
 	}
 
 	let div = document.createElement("div");
-	div.style.position = "absolute";
+	div.style.position = "fixed";
 	div.style.top = "0";
 	div.style.left = "0";
 	div.style.zIndex = "2100000000";
 	div.style.width = "100%";
 	div.style.height = "100vh";
 	div.style.border = "none";
-	div.style.backgroundColor = "rgb(0, 0, 0)";
+	div.style.backgroundColor = "rgb(0 0 0)";
 	div.style.padding = "0";
 	div.style.margin = "0";
 
 	window.scroll(0, 0);
 
 	if (document.fullscreenElement !== null) {
-		currentForefront =
-			document.fullscreenElement.appendChild(div);
+		currentForefront = document.fullscreenElement.appendChild(div);
 	} else {
-		currentForefront =
-			document.body.appendChild(div);
+		currentForefront = document.body.appendChild(div);
 	}
 
 	div.appendChild(video); // move
@@ -122,6 +120,7 @@ async function processImage(dataUrl, urlType) {
 		alpha: false,
 		desynchronized: true
 	});
+
 	context.drawImage(img,
 		elemX, elemY, elemWidth, elemHeight,
 		0, 0, videoWidth, videoHeight
