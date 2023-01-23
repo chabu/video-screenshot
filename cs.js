@@ -121,6 +121,8 @@ async function processImage(dataUrl, urlType) {
 		desynchronized: true
 	});
 
+	context.imageSmoothingQuality = "high";
+
 	context.drawImage(img,
 		elemX, elemY, elemWidth, elemHeight,
 		0, 0, videoWidth, videoHeight
