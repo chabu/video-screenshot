@@ -35,27 +35,12 @@ async function doAllProcesses(tabId) {
 		cmd: "forefrontVideo"
 	});
 
-	chrome.alarms.create("doRemainingProcesses", {
-		when: Date.now() + delayCapture
-	});
-}
-
-chrome.alarms.onAlarm.addListener(async (alarm) => {
 	// step 3 of 6
-	if (alarm.name === "doRemainingProcesses") {
+	setTimeout(async () => {
 		let dataUrl = await chrome.tabs.captureVisibleTab({
 			format: captureVisibleTabFormat,
 			quality: 100
 		});
-
-		let tabs = await chrome.tabs.query({
-			active: true,
-			currentWindow: true
-		});
-		if (tabs.length < 1) {
-			throw Error();
-		}
-		let tabId = tabs[0].id;
 
 		await chrome.tabs.sendMessage(tabId, {
 			cmd: "processImage",
@@ -66,8 +51,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 		await chrome.tabs.sendMessage(tabId, {
 			cmd: "restoreVideo"
 		});
-	}
-});
+	}, delayCapture);
+}
 
 chrome.runtime.onMessage.addListener(async (msg, sender) => {
 	// step 5 of 6
