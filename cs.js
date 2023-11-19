@@ -95,13 +95,17 @@ function forefrontVideo() {
 	currentVideo = video;
 }
 
-async function processImage(dataUrl, urlType) {
-	let img = new Image();
-	img.loading = "eager";
-	img.decoding = "async";
-	img.src = dataUrl;
+function loadImage(src) {
+	return new Promise((resolve, reject) => {
+		let img = new Image();
+		img.onload = () => resolve(img);
+		img.onerror = (e) => reject(e);
+		img.src = src;
+	});
+}
 
-	await img.decode();
+async function processImage(dataUrl, urlType) {
+	const img = await loadImage(dataUrl);
 
 	let pixelRatio = window.devicePixelRatio;
 	let elemX = forCapture.elemX * pixelRatio;
