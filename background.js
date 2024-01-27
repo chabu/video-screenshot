@@ -14,8 +14,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 chrome.runtime.onInstalled.addListener(() => {
 	chrome.contextMenus.create({
-		id: "1",
-		title: "Take a screenshot of videos"
+		id: "shot",
+		title: "Take a screenshot of the video"
 	});
 });
 
