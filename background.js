@@ -4,19 +4,19 @@ const delayCapture = 50; // in ms
 const captureVisibleTabFormat = "png"; // or "jpeg"
 const canvasToDataUrlType = "image/png"; // or "image/jpeg"
 
+chrome.runtime.onInstalled.addListener(() => {
+	chrome.contextMenus.create({
+		id: "shot",
+		title: "Take a screenshot of the video"
+	});
+});
+
 chrome.action.onClicked.addListener((tab) => {
 	doAllProcesses(tab.id);
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
 	doAllProcesses(tab.id);
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-	chrome.contextMenus.create({
-		id: "shot",
-		title: "Take a screenshot of the video"
-	});
 });
 
 // step 1 of 6
@@ -27,7 +27,7 @@ async function doAllProcesses(tabId) {
 		// execute only once
 		await chrome.scripting.executeScript({
 			target: {tabId: tabId},
-			files: ["inject-to-active-tab.js"]
+			files: ["inject-into-active-tab.js"]
 		});
 	});
 

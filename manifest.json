@@ -21,7 +21,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://animestore.docomo.ne.jp/*"],
-			"js": ["disable-no-right-click.js"]
+			"js": ["enable-right-click.js"]
 		}
 	]
 }
