@@ -27,7 +27,7 @@ async function doAllProcesses(tabId) {
 		// execute only once
 		await chrome.scripting.executeScript({
 			target: {tabId: tabId},
-			files: ["cs.js"]
+			files: ["inject-to-active-tab.js"]
 		});
 	});
 
