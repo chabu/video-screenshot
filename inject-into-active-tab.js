@@ -1,7 +1,7 @@
 "use strict";
 
-let forRestore = {};
-let forCapture = {};
+const forRestore = {};
+const forCapture = {};
 let currentVideo = null;
 let currentNearby = null;
 let currentForefront = null;
@@ -24,19 +24,19 @@ chrome.runtime.onMessage.addListener((msg) => {
 });
 
 function forefrontVideo() {
-	let video = document.querySelector("video[src^='blob:']");
+	const video = document.querySelector("video[src^='blob:']");
 	if (video === null) {
 		throw Error();
 	}
 
-	let html = document.documentElement;
-	let tabWidth = html.clientWidth;
-	let tabHeight = html.clientHeight;
-	let tabAspectRatio = tabWidth / tabHeight;
+	const html = document.documentElement;
+	const tabWidth = html.clientWidth;
+	const tabHeight = html.clientHeight;
+	const tabAspectRatio = tabWidth / tabHeight;
 
-	let videoWidth = video.videoWidth;
-	let videoHeight = video.videoHeight;
-	let videoAspectRatio = videoWidth / videoHeight;
+	const videoWidth = video.videoWidth;
+	const videoHeight = video.videoHeight;
+	const videoAspectRatio = videoWidth / videoHeight;
 
 	forRestore.position = video.style.position;
 	forRestore.width = video.style.width;
@@ -50,11 +50,11 @@ function forefrontVideo() {
 		currentNearby = video.previousElementSibling;
 	}
 
-	let div = document.createElement("div");
+	const div = document.createElement("div");
 	div.style.position = "fixed";
 	div.style.top = "0";
 	div.style.left = "0";
-	div.style.zIndex = "2100000000";
+	div.style.zIndex = "2000000000";
 	div.style.width = "100%";
 	div.style.height = "100vh";
 	div.style.border = "none";
@@ -81,7 +81,7 @@ function forefrontVideo() {
 		video.style.height = "100%";
 	}
 
-	let rect = video.getBoundingClientRect();
+	const rect = video.getBoundingClientRect();
 
 	forCapture.elemX = rect.x;
 	forCapture.elemY = rect.y;
@@ -97,7 +97,7 @@ function forefrontVideo() {
 
 function loadImage(src) {
 	return new Promise((resolve, reject) => {
-		let img = new Image();
+		const img = new Image();
 		img.onload = () => resolve(img);
 		img.onerror = (e) => reject(e);
 		img.src = src;
@@ -107,20 +107,20 @@ function loadImage(src) {
 async function processImage(dataUrl, urlType) {
 	const img = await loadImage(dataUrl);
 
-	let pixelRatio = window.devicePixelRatio;
-	let elemX = forCapture.elemX * pixelRatio;
-	let elemY = forCapture.elemY * pixelRatio;
-	let elemWidth = forCapture.elemWidth * pixelRatio;
-	let elemHeight = forCapture.elemHeight * pixelRatio;
+	const pixelRatio = window.devicePixelRatio;
+	const elemX = forCapture.elemX * pixelRatio;
+	const elemY = forCapture.elemY * pixelRatio;
+	const elemWidth = forCapture.elemWidth * pixelRatio;
+	const elemHeight = forCapture.elemHeight * pixelRatio;
 
-	let videoWidth = forCapture.videoWidth;
-	let videoHeight = forCapture.videoHeight;
+	const videoWidth = forCapture.videoWidth;
+	const videoHeight = forCapture.videoHeight;
 
-	let canvas = document.createElement("canvas");
+	const canvas = document.createElement("canvas");
 	canvas.width = videoWidth;
 	canvas.height = videoHeight;
 
-	let context = canvas.getContext("2d", {
+	const context = canvas.getContext("2d", {
 		alpha: false,
 		desynchronized: true
 	});
@@ -132,7 +132,7 @@ async function processImage(dataUrl, urlType) {
 		0, 0, videoWidth, videoHeight
 	);
 
-	let encodedImage = canvas.toDataURL(urlType);
+	const encodedImage = canvas.toDataURL(urlType);
 
 	await chrome.runtime.sendMessage({
 		cmd: "completeProcessImage",

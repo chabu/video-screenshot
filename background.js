@@ -37,7 +37,7 @@ async function doAllProcesses(tabId) {
 
 	// step 3 of 6
 	setTimeout(async () => {
-		let dataUrl = await chrome.tabs.captureVisibleTab({
+		const dataUrl = await chrome.tabs.captureVisibleTab({
 			format: captureVisibleTabFormat,
 			quality: 100
 		});
@@ -57,21 +57,21 @@ async function doAllProcesses(tabId) {
 chrome.runtime.onMessage.addListener(async (msg, sender) => {
 	// step 5 of 6
 	if (msg.cmd === "completeProcessImage") {
-		let second = msg.currentTime;
+		const second = msg.currentTime;
 
 		let suffix;
 		if (second < 3600) {
-			let m = Math.floor(second / 60);
-			let s = Math.floor(second) % 60;
+			const m = Math.floor(second / 60);
+			const s = Math.floor(second) % 60;
 			suffix = `m${m}s${s}`;
 		} else {
-			let h = Math.floor(second / 3600) % 24;
-			let m = Math.floor(second / 60) % 60;
-			let s = Math.floor(second) % 60;
+			const h = Math.floor(second / 3600) % 24;
+			const m = Math.floor(second / 60) % 60;
+			const s = Math.floor(second) % 60;
 			suffix = `h${h}m${m}s${s}`;
 		}
 
-		let filename = `ep0${suffix}`;
+		const filename = `ep0${suffix}`;
 
 		if (msg.data === "data:,") {
 			await chrome.tabs.sendMessage(tabId, {
