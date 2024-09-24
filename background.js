@@ -74,7 +74,7 @@ chrome.runtime.onMessage.addListener(async (msg, sender) => {
 		const filename = `ep0${suffix}`;
 
 		if (msg.data === "data:,") {
-			await chrome.tabs.sendMessage(tabId, {
+			await chrome.tabs.sendMessage(sender.tab.id, {
 				cmd: "notice",
 				data: "empty data detected"
 			});
@@ -89,7 +89,7 @@ chrome.runtime.onMessage.addListener(async (msg, sender) => {
 				filename: `${filename}.png`
 			});
 		} else {
-			await chrome.tabs.sendMessage(tabId, {
+			await chrome.tabs.sendMessage(sender.tab.id, {
 				cmd: "notice",
 				data: "unknown data detected"
 			});
