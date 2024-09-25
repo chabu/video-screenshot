@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
-	"name": "1",
-	"version": "0.0.2",
+	"name": "S",
+	"version": "0.0.3",
 
 	"permissions": [
 		"activeTab",
@@ -15,7 +15,8 @@
 	},
 
 	"action": {
-		"default_title": "Take a screenshot of the video"
+		"default_title": "show user interface",
+		"default_popup": "popup.html"
 	},
 
 	"content_scripts": [

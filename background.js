@@ -11,16 +11,12 @@ chrome.runtime.onInstalled.addListener(() => {
 	});
 });
 
-chrome.action.onClicked.addListener((tab) => {
-	doAllProcesses(tab.id);
-});
-
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-	doAllProcesses(tab.id);
+	takeScreenshot(tab.id);
 });
 
 // step 1 of 6
-async function doAllProcesses(tabId) {
+async function takeScreenshot(tabId) {
 	await chrome.tabs.sendMessage(tabId, {
 		cmd: null
 	}).catch(async () => {
@@ -55,8 +51,13 @@ async function doAllProcesses(tabId) {
 }
 
 chrome.runtime.onMessage.addListener(async (msg, sender) => {
-	// step 5 of 6
-	if (msg.cmd === "completeProcessImage") {
+	if (msg.cmd === "invokeTakeScreenshot") {
+		const [currentTab] = await chrome.tabs.query({
+			active: true,
+			lastFocusedWindow: true
+		});
+		takeScreenshot(currentTab.id);
+	} else if (msg.cmd === "completeProcessImage") { // step 5 of 6
 		const second = msg.currentTime;
 
 		let suffix;
