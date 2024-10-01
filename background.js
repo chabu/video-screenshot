@@ -72,7 +72,11 @@ chrome.runtime.onMessage.addListener(async (msg, sender) => {
 			suffix = `h${h}m${m}s${s}`;
 		}
 
-		const filename = `ep0${suffix}`;
+		const storageLocal = await chrome.storage.local.get({
+			filenamePrefix: "ss0ep0",
+		});
+
+		const filename = storageLocal.filenamePrefix + suffix;
 
 		if (msg.data === "data:,") {
 			await chrome.tabs.sendMessage(sender.tab.id, {

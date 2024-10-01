@@ -1,13 +1,14 @@
 {
 	"manifest_version": 3,
 	"name": "S",
-	"version": "0.0.3",
+	"version": "0.0.4",
 
 	"permissions": [
 		"activeTab",
 		"contextMenus",
 		"downloads",
-		"scripting"
+		"scripting",
+		"storage"
 	],
 
 	"background": {
@@ -15,7 +16,7 @@
 	},
 
 	"action": {
-		"default_title": "show user interface",
+		"default_title": "show operation panel",
 		"default_popup": "popup.html"
 	},
 
