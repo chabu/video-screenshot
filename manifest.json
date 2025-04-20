@@ -22,6 +22,10 @@
 
 	"content_scripts": [
 		{
+			"matches": ["https://www.amazon.co.jp/*"],
+			"css": ["hide-next-up.css"]
+		},
+		{
 			"matches": ["https://animestore.docomo.ne.jp/*"],
 			"js": ["enable-right-click.js"]
 		}
