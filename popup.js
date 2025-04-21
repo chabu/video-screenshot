@@ -1,27 +1,43 @@
 "use strict";
 
-assignStoredValues();
+const elemFilenamePrefix = document.querySelector("input[name=filenamePrefix]");
+const elemTimeOffset = document.querySelector("input[name=timeOffset]");
+
+loadStoredData();
+
+elemFilenamePrefix.addEventListener("change", async () => {
+	await chrome.storage.local.set({
+		filenamePrefix: elemFilenamePrefix.value
+	});
+});
+
+elemTimeOffset.addEventListener("change", async () => {
+	const timeOffset = Number(elemTimeOffset.value);
+	if (Number.isNaN(timeOffset)) {
+		return;
+	}
+	await chrome.storage.local.set({
+		timeOffset: timeOffset
+	});
+});
 
 const buttons = document.querySelectorAll("button[type=button]");
 for (const button of buttons) {
 	if (button.name === "invokeTakeScreenshot") {
 		button.addEventListener("click", async () => {
 			await chrome.runtime.sendMessage({
-				cmd: button.name
+				cmd: "invokeTakeScreenshot"
 			});
 		});
-	} else if (button.name === "saveFilenamePrefix") {
-		button.addEventListener("click", async () => {
-			const filenamePrefixElem = document.querySelector("input[name=filenamePrefix]");
-			await chrome.storage.local.set({
-				filenamePrefix: filenamePrefixElem.value
-			});
-		});
-	} else if (button.name === "clearFilenamePrefix") {
+	} else if (button.name === "resetFilenamePrefix") {
 		button.addEventListener("click", async () => {
 			await chrome.storage.local.remove("filenamePrefix");
-			const filenamePrefixElem = document.querySelector("input[name=filenamePrefix]");
-			filenamePrefixElem.value = "";
+			elemFilenamePrefix.value = "";
+		});
+	} else if (button.name === "resetTimeOffset") {
+		button.addEventListener("click", async () => {
+			await chrome.storage.local.remove("timeOffset");
+			elemTimeOffset.value = 0;
 		});
 	} else if (button.name === "videoSpeed") {
 		button.addEventListener("click", async () => {
@@ -51,13 +67,14 @@ for (const button of buttons) {
 	}
 }
 
-async function assignStoredValues() {
-	const storageLocal = await chrome.storage.local.get({
+async function loadStoredData() {
+	const storLocal = await chrome.storage.local.get({
 		filenamePrefix: "",
+		timeOffset: 0,
 	});
 
-	const filenamePrefixElem = document.querySelector("input[name=filenamePrefix]");
-	filenamePrefixElem.value = storageLocal.filenamePrefix;
+	elemFilenamePrefix.value = storLocal.filenamePrefix;
+	elemTimeOffset.value = storLocal.timeOffset;
 }
 
 function videoSpeed(delta) {
@@ -65,6 +82,7 @@ function videoSpeed(delta) {
 	const strmVideo = Array.from(videos).findLast(
 		(video) => video.currentSrc.startsWith("blob:")
 	);
+
 	if (delta === 0) {
 		strmVideo.playbackRate = 1.0;
 	} else {

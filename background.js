@@ -7,7 +7,7 @@ const canvasToDataUrlType = "image/png"; // or "image/jpeg"
 chrome.runtime.onInstalled.addListener(() => {
 	chrome.contextMenus.create({
 		id: "shot",
-		title: "Take a screenshot of the video"
+		title: "Take a screenshot of the video",
 	});
 });
 
@@ -22,8 +22,8 @@ async function takeScreenshot(tabId) {
 	}).catch(async () => {
 		// execute only once
 		await chrome.scripting.executeScript({
+			files: ["inject-into-active-tab.js"],
 			target: {tabId: tabId},
-			files: ["inject-into-active-tab.js"]
 		});
 	});
 
@@ -35,13 +35,13 @@ async function takeScreenshot(tabId) {
 	setTimeout(async () => {
 		const dataUrl = await chrome.tabs.captureVisibleTab({
 			format: captureVisibleTabFormat,
-			quality: 100
+			quality: 100,
 		});
 
 		await chrome.tabs.sendMessage(tabId, {
 			cmd: "processImage",
 			dataUrl: dataUrl,
-			urlType: canvasToDataUrlType
+			urlType: canvasToDataUrlType,
 		});
 
 		await chrome.tabs.sendMessage(tabId, {
@@ -52,13 +52,18 @@ async function takeScreenshot(tabId) {
 
 chrome.runtime.onMessage.addListener(async (msg, sender) => {
 	if (msg.cmd === "invokeTakeScreenshot") {
-		const [currentTab] = await chrome.tabs.query({
+		const [tab] = await chrome.tabs.query({
 			active: true,
-			lastFocusedWindow: true
+			currentWindow: true,
 		});
-		takeScreenshot(currentTab.id);
+		takeScreenshot(tab.id);
 	} else if (msg.cmd === "completeProcessImage") { // step 5 of 6
-		const second = msg.currentTime;
+		const storLocal = await chrome.storage.local.get({
+			filenamePrefix: "",
+			timeOffset: 0,
+		});
+
+		const second = msg.currentTime + storLocal.timeOffset;
 
 		let suffix;
 		if (second < 3600) {
@@ -72,31 +77,27 @@ chrome.runtime.onMessage.addListener(async (msg, sender) => {
 			suffix = `h${h}m${m}s${s}`;
 		}
 
-		const storageLocal = await chrome.storage.local.get({
-			filenamePrefix: "ss0ep0",
-		});
-
-		const filename = storageLocal.filenamePrefix + suffix;
+		const filename = storLocal.filenamePrefix + suffix;
 
 		if (msg.data === "data:,") {
 			await chrome.tabs.sendMessage(sender.tab.id, {
 				cmd: "notice",
-				data: "empty data detected"
+				data: "empty data",
 			});
 		} else if (msg.data.startsWith("data:image/jpeg;")) {
 			await chrome.downloads.download({
 				url: msg.data,
-				filename: `${filename}.jpg`
+				filename: `${filename}.jpg`,
 			});
 		} else if (msg.data.startsWith("data:image/png;")) {
 			await chrome.downloads.download({
 				url: msg.data,
-				filename: `${filename}.png`
+				filename: `${filename}.png`,
 			});
 		} else {
 			await chrome.tabs.sendMessage(sender.tab.id, {
 				cmd: "notice",
-				data: "unknown data detected"
+				data: "unknown data",
 			});
 		}
 	}

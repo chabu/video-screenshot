@@ -25,6 +25,10 @@
 				margin-right: auto;
 			}
 
+			input[type="text"] {
+				text-align: center;
+			}
+
 			p {
 				margin-top: 0.5em;
 				margin-bottom: 0.5em;
@@ -42,10 +46,16 @@
 			</fieldset>
 			<fieldset>
 				<legend>Filename prefix</legend>
-				<p><input type="text" name="filenamePrefix" size="16"></p>
 				<p>
-					<button type="button" name="clearFilenamePrefix">clear</button>
-					<button type="button" name="saveFilenamePrefix">save</button>
+					<input type="text" name="filenamePrefix" size="12">
+					<button type="button" name="resetFilenamePrefix">reset</button>
+				</p>
+			</fieldset>
+			<fieldset>
+				<legend>Time offset for save</legend>
+				<p>
+					<input type="text" name="timeOffset" size="8">
+					<button type="button" name="resetTimeOffset">reset</button>
 				</p>
 			</fieldset>
 			<fieldset>
