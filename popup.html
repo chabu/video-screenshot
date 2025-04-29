@@ -10,7 +10,7 @@
 			}
 
 			main {
-				width: 240px;
+				width: 320px;
 				margin: 0 auto;
 			}
 
@@ -57,16 +57,35 @@
 				<legend>Time offset for save</legend>
 				<p>
 					<input type="text" name="timeOffset" size="8">
-					<button type="button" name="resetTimeOffset">reset</button>
+					<button type="button" name="zeroAdjust">zero adjust</button>
 				</p>
 			</fieldset>
 			<fieldset>
 				<legend>Video speed</legend>
 				<p>
-					<button type="button" name="videoSpeed" value="-0.25">-0.25</button>
-					<button type="button" name="videoSpeed" value="-0.5">-0.5</button>
-					<button type="button" name="videoSpeed" value="0">1.0</button>
-					<button type="button" name="videoSpeed" value="0.5">+0.5</button>
+					<button type="button" name="videoSpeed" value="0.125">1/8</button>
+					<button type="button" name="videoSpeed" value="0.25">1/4</button>
+					<button type="button" name="videoSpeed" value="0.5">1/2</button>
+					<button type="button" name="videoSpeed" value="1">1</button>
+					<button type="button" name="videoSpeed" value="2">2</button>
+					<button type="button" name="videoSpeed" value="3">3</button>
+					<button type="button" name="videoSpeed" value="4">4</button>
+				</p>
+			</fieldset>
+			<fieldset>
+				<legend>Seek</legend>
+				<p>
+					<button type="button" name="seek" value="-8">◂1/8</button>
+					<button type="button" name="seek" value="-0.2">◂5s</button>
+					<button type="button" name="playOrPause">Play / Pause</button>
+					<button type="button" name="seek" value="0.2">5s▸</button>
+					<button type="button" name="seek" value="8">1/8▸</button>
+				</p>
+				<p>
+					<button type="button" name="seek" value="-24">◂1/24</button>
+					<button type="button" name="seek" value="-12">◂1/12</button>
+					<button type="button" name="seek" value="12">1/12▸</button>
+					<button type="button" name="seek" value="24">1/24▸</button>
 				</p>
 			</fieldset>
 		</main>

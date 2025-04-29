@@ -34,10 +34,17 @@ for (const button of buttons) {
 			await chrome.storage.local.remove("filenamePrefix");
 			elemFilenamePrefix.value = "";
 		});
-	} else if (button.name === "resetTimeOffset") {
+	} else if (button.name === "zeroAdjust") {
 		button.addEventListener("click", async () => {
-			await chrome.storage.local.remove("timeOffset");
-			elemTimeOffset.value = 0;
+			const [tab] = await chrome.tabs.query({
+				active: true,
+				currentWindow: true,
+			});
+			const [injected] = await chrome.scripting.executeScript({
+				func: zeroAdjust,
+				target: {tabId: tab.id},
+			});
+			elemTimeOffset.value = (-injected.result).toFixed(2);
 		});
 	} else if (button.name === "videoSpeed") {
 		button.addEventListener("click", async () => {
@@ -45,9 +52,32 @@ for (const button of buttons) {
 				active: true,
 				currentWindow: true,
 			});
-
 			await chrome.scripting.executeScript({
 				func: videoSpeed,
+				args: [Number(button.value)],
+				target: {tabId: tab.id},
+			});
+		});
+	} else if (button.name === "seek") {
+		button.addEventListener("click", async () => {
+			const [tab] = await chrome.tabs.query({
+				active: true,
+				currentWindow: true,
+			});
+			await chrome.scripting.executeScript({
+				func: seek,
+				args: [Number(button.value)],
+				target: {tabId: tab.id},
+			});
+		});
+	} else if (button.name === "playOrPause") {
+		button.addEventListener("click", async () => {
+			const [tab] = await chrome.tabs.query({
+				active: true,
+				currentWindow: true,
+			});
+			await chrome.scripting.executeScript({
+				func: playOrPause,
 				args: [Number(button.value)],
 				target: {tabId: tab.id},
 			});
@@ -58,7 +88,6 @@ for (const button of buttons) {
 				active: true,
 				currentWindow: true,
 			});
-
 			await chrome.scripting.executeScript({
 				files: [button.value],
 				target: {tabId: tab.id},
@@ -72,20 +101,42 @@ async function loadStoredData() {
 		filenamePrefix: "",
 		timeOffset: 0,
 	});
-
 	elemFilenamePrefix.value = storLocal.filenamePrefix;
 	elemTimeOffset.value = storLocal.timeOffset;
 }
 
-function videoSpeed(delta) {
+function zeroAdjust() {
 	const videos = document.querySelectorAll("video");
 	const strmVideo = Array.from(videos).findLast(
 		(video) => video.currentSrc.startsWith("blob:")
 	);
+	return strmVideo.currentTime;
+}
 
-	if (delta === 0) {
-		strmVideo.playbackRate = 1.0;
+function videoSpeed(rate) {
+	const videos = document.querySelectorAll("video");
+	const strmVideo = Array.from(videos).findLast(
+		(video) => video.currentSrc.startsWith("blob:")
+	);
+	strmVideo.playbackRate = rate;
+}
+
+function seek(divisor) {
+	const videos = document.querySelectorAll("video");
+	const strmVideo = Array.from(videos).findLast(
+		(video) => video.currentSrc.startsWith("blob:")
+	);
+	strmVideo.currentTime += 1 / divisor;
+}
+
+function playOrPause() {
+	const videos = document.querySelectorAll("video");
+	const strmVideo = Array.from(videos).findLast(
+		(video) => video.currentSrc.startsWith("blob:")
+	);
+	if (strmVideo.paused) {
+		strmVideo.play();
 	} else {
-		strmVideo.playbackRate += delta;
+		strmVideo.pause();
 	}
 }
