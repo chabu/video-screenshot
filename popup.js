@@ -45,6 +45,7 @@ for (const button of buttons) {
 				target: {tabId: tab.id},
 			});
 			elemTimeOffset.value = (-injected.result).toFixed(2);
+			elemTimeOffset.dispatchEvent(new Event("change"));
 		});
 	} else if (button.name === "videoSpeed") {
 		button.addEventListener("click", async () => {
